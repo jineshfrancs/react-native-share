@@ -15,6 +15,8 @@ import {
   StyleSheet,
   Text,
   View,
+  ScrollView,
+  SafeAreaView,
 } from 'react-native';
 
 import Share from 'react-native-share';
@@ -55,6 +57,26 @@ const App = () => {
   }
 
   /**
+   * Basic share with url & message
+   */
+  const shareUrlWithMessage = async () => {
+    const shareOptions = {
+      title: 'Share file',
+      message: 'Simple share with message',
+      url: 'https://google.com',
+    };
+
+    try {
+      const ShareResponse = await Share.open(shareOptions);
+      console.log('Result =>', ShareResponse);
+      setResult(JSON.stringify(ShareResponse, null, 2));
+    } catch (error) {
+      console.log('Error =>', error);
+      setResult('error: '.concat(getErrorString(error)));
+    }
+  };
+
+  /**
    * This functions share multiple images that
    * you send as the urls param
    */
@@ -78,7 +100,7 @@ const App = () => {
   };
 
   /**
-   * This functions share a image passed using the
+   * This function share an image passed using the
    * url param
    */
   const shareEmailImage = async () => {
@@ -120,7 +142,7 @@ const App = () => {
   };
 
   /**
-   * This functions share a image passed using the
+   * This function share an image passed using the
    * url param
    */
   const shareSingleImage = async () => {
@@ -200,8 +222,11 @@ const App = () => {
 
   const shareToInstagramDirect = async () => {
     const shareOptions = {
-      message: encodeURI('Checkout the great search engine: https://google.com'),
+      message: encodeURI(
+        'Checkout the great search engine: https://google.com',
+      ),
       social: Share.Social.INSTAGRAM,
+      type: 'text/plain',
     };
 
     try {
@@ -219,7 +244,6 @@ const App = () => {
       backgroundImage: images.image1,
       social: Share.Social.INSTAGRAM_STORIES,
       appId: '219376304', //instagram appId
-
     };
 
     try {
@@ -336,14 +360,31 @@ const App = () => {
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.welcome}>Welcome to React Native Share Example!</Text>
-      <View style={styles.optionsRow}>
+    <SafeAreaView style={styles.container}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Text style={styles.welcome}>
+          Welcome to React Native Share Example!
+        </Text>
+        <View style={styles.button}>
+          <Button onPress={shareUrlWithMessage} title="Share Simple Url" />
+        </View>
         <View style={styles.button}>
           <Button onPress={shareMultipleImages} title="Share Multiple Images" />
         </View>
         <View style={styles.button}>
           <Button onPress={shareSingleImage} title="Share Single Image" />
+        </View>
+        <View style={styles.withInputContainer}>
+          <TextInput
+            placeholder="Recipient"
+            onChangeText={setRecipient}
+            value={recipient}
+            style={styles.textInput}
+            keyboardType="number-pad"
+          />
+          <View>
+            <Button onPress={shareSms} title="Share via SMS" />
+          </View>
         </View>
         <View style={styles.button}>
           <Button onPress={shareEmailImage} title="Share Social: Email" />
@@ -387,18 +428,6 @@ const App = () => {
             </View>
             <View style={styles.withInputContainer}>
               <TextInput
-                placeholder="Recipient"
-                onChangeText={setRecipient}
-                value={recipient}
-                style={styles.textInput}
-                keyboardType="number-pad"
-              />
-              <View>
-                <Button onPress={shareSms} title="Share Social: SMS" />
-              </View>
-            </View>
-            <View style={styles.withInputContainer}>
-              <TextInput
                 placeholder="Search for a Package"
                 onChangeText={setPackageSearch}
                 value={packageSearch}
@@ -415,8 +444,8 @@ const App = () => {
         )}
         <Text style={styles.resultTitle}>Result</Text>
         <Text style={styles.result}>{result}</Text>
-      </View>
-    </View>
+      </ScrollView>
+    </SafeAreaView>
   );
 };
 
@@ -450,6 +479,7 @@ const styles = StyleSheet.create({
   },
   optionsRow: {
     justifyContent: 'space-between',
+    width: '80%',
   },
   withInputContainer: {
     alignItems: 'center',
