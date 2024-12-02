@@ -1,4 +1,4 @@
-import NativeRNShare from '../codegenSpec/NativeRNShare';
+import NativeRNShare from './codegenSpec/NativeRNShare';
 
 import Overlay from './components/Overlay';
 import Sheet from './components/Sheet';
@@ -42,6 +42,7 @@ const RNShare = {
     MESSENGER: NativeRNShare.getConstants().MESSENGER || Social.Messenger,
     SNAPCHAT: NativeRNShare.getConstants().SNAPCHAT || Social.Snapchat,
     VIBER: NativeRNShare.getConstants().VIBER || Social.Viber,
+    DISCORD: NativeRNShare.getConstants().DISCORD || Social.Discord,
   },
 
   async open(options: ShareOptions) {

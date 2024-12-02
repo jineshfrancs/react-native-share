@@ -21,11 +21,12 @@
 #import "ViberShare.h"
 #import "MessengerShare.h"
 #import "SmsShare.h"
+#import "DiscordShare.h"
 #import "RNShareActivityItemSource.h"
 #import "RNShareUtils.h"
 
 #if RCT_NEW_ARCH_ENABLED
-#import <RNShareSpec/RNShareSpec.h>
+#import "RNShareSpec.h"
 #endif
 
 @implementation RNShare
@@ -95,6 +96,7 @@ RCT_EXPORT_MODULE()
     @"MESSENGER": @"messenger",
     @"VIBER": @"viber",
     @"SMS": @"sms",
+    @"DISCORD": @"discord",
     @"SHARE_BACKGROUND_IMAGE": @"shareBackgroundImage",
     @"SHARE_BACKGROUND_VIDEO": @"shareBackgroundVideo",
     @"SHARE_STICKER_IMAGE": @"shareStickerImage",
@@ -169,6 +171,10 @@ RCT_EXPORT_METHOD(shareSingle:(NSDictionary *)options
         } else if([social isEqualToString:@"sms"]) {
             NSLog(@"TRY OPEN sms");
             [smsShareCtl shareSingle:options reject: reject resolve: resolve];
+        } else if([social isEqualToString:@"discord"]) {
+            NSLog(@"TRY OPEN discord");
+            DiscordShare *shareCtl = [[DiscordShare alloc] init];
+            [shareCtl shareSingle:options reject: reject resolve: resolve];
         }
     } else {
         RCTLogError(@"key 'social' missing in options");

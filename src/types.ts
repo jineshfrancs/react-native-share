@@ -16,6 +16,7 @@ export enum Social {
   Snapchat = 'snapchat',
   Messenger = 'messenger',
   Viber = 'viber',
+  Discord = 'discord',
 }
 
 export enum ShareAsset {
@@ -71,6 +72,8 @@ interface BaseSocialStoriesShareSingleOptions extends Omit<BaseShareSingleOption
   backgroundTopColor?: string;
   attributionURL?: string;
   backgroundVideo?: string;
+  linkUrl?: string;
+  linkText?: string;
 }
 
 export interface InstagramStoriesShareSingleOptions extends BaseSocialStoriesShareSingleOptions {
